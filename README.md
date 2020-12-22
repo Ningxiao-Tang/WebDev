@@ -1,2 +1,2 @@
 # webDev
-full stack web dev project
+full stack web dev with react project
