@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
 
 
@@ -6,7 +6,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
     
 
     //渲染点击Card
-    function renderDish({dish}) {
+    function RenderDish({dish}) {
         // console.log(dish)
         if (dish != null) {
             return(
@@ -28,7 +28,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
         }
     }
 
-    function renderComments({comments}){
+    function RenderComments({comments}){
         // console.log(comments)
         if (comments != null) {
             <div className="col-12 col-md-5 m-1">
@@ -55,19 +55,20 @@ import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
     const DishDetail = (props) =>{
 
         // console.log(this.props.dishSelect)
-        const {dish} = this.props;
-        console.log(this.props);
-
-        return dish?(
-            <div className="container">
-                <div className="row">
-                        <renderDish dish={props.dish} />
-                        <renderComments comments={props.dish.comments}/>
+        if(this.props.dish != null){
+            return (
+                <div className="container">
+                    <div className="row">
+                            <RenderDish dish={props.dish} />
+                            <RenderComments comments={props.dish.comments}/>
+                    </div>
                 </div>
-            </div>
-        ):(
-            <div></div>
-        )
+            )}
+        else {
+            return(
+                <div></div>
+            )
     }
+}
 
 export default DishDetail
