@@ -2,17 +2,11 @@ import React, { Component } from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
 
 
-class DishDetail extends Component {
 
-    constructor(props){
-        super(props)
-        this.state = {
-
-        }
-    }
+    
 
     //渲染点击Card
-    renderDish(dish) {
+    function renderDish({dish}) {
         // console.log(dish)
         if (dish != null) {
             return(
@@ -34,32 +28,22 @@ class DishDetail extends Component {
         }
     }
 
-    renderComments(comment){
+    function renderComments({comments}){
         // console.log(comments)
-        if (comment != null) {
-
-            let list = comment.map((comment)=>{
-
-                return(
-                    <li key={comment.id} >
-                        <div>
-                            <p>{comment.comment}</p>
-                            <p>--{comment.author},
-                            {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
-                        </div>
-                    </li>
-
-                )
-            })
-
-            return(
-                    <div className="col-12 col-md-5 m-1">
-                        <h4>Comments</h4>
-                        <ul className="list-unstyled">
-                            {list}
-                        </ul>
-                    </div>
-            )
+        if (comments != null) {
+            <div className="col-12 col-md-5 m-1">
+                <h4>Comments</h4>
+                <ul className="list-unstyled">
+                    {comments.map((comment) => {
+                        return (
+                            <li key={comment.id}>
+                                <p>{comment.comment}</p>
+                                <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                            </li>
+                        )
+                    })}
+                </ul>
+            </div>
         }
         else{
             return(
@@ -68,7 +52,7 @@ class DishDetail extends Component {
         }
     }
 
-    render(){
+    const DishDetail = (props) =>{
 
         // console.log(this.props.dishSelect)
         const {dish} = this.props;
@@ -77,15 +61,13 @@ class DishDetail extends Component {
         return dish?(
             <div className="container">
                 <div className="row">
-                        {this.renderDish(dish)}
-                        {this.renderComments(dish.comments)}
+                        <renderDish dish={props.dish} />
+                        <renderComments comments={props.dish.comments}/>
                 </div>
             </div>
         ):(
             <div></div>
         )
     }
-
-}
 
 export default DishDetail
