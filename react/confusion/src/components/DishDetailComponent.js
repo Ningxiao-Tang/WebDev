@@ -1,113 +1,91 @@
 import React, { Component } from "react";
-import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import { Loading } from './LoadingComponent';
-import { Link } from 'react-router-dom';
-import { baseUrl } from '../shared/baseUrl';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
 
-//渲染点击Card
-function RenderDish({dish}) {
-    return(
-        <div className="col-12 col-md-5 m-1">
-            <Card>
-                <CardImg width="100%" src={dish.image} alt={dish.name} />
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody>
-            </Card>
-        </div>
-    )
-}
 
-function RenderComments({comments, addComment, dishId}){
-// console.log(comments)
-if (comments != null) {
+class DishDetail extends Component {
 
-    let list = comments.map((comments)=>{
+    constructor(props){
+        super(props)
+        this.state = {
 
-        return(
-            <li key={comments.id} >
-                <div>
-                    <p>{comments.comment}</p>
-                    <p>--{comments.author},
-                    {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comments.date)))}</p>
+        }
+    }
+
+    //渲染点击Card
+    renderDish(dish) {
+        // console.log(dish)
+        if (dish != null) {
+            return(
+                <div className="col-12 col-md-5 m-1">
+                    <Card>
+                        <CardImg width="100%" src={dish.image} alt={dish.name} />
+                        <CardBody>
+                            <CardTitle>{dish.name}</CardTitle>
+                            <CardText>{dish.description}</CardText>
+                        </CardBody>
+                    </Card>
                 </div>
-            </li>
+            )
+        }
+        else{
+            return(
+                <div></div>
+            )
+        }
+    }
 
+    renderComments(comment){
+        // console.log(comments)
+        if (comment != null) {
+
+            let list = comment.map((comment)=>{
+
+                return(
+                    <li key={comment.id} >
+                        <div>
+                            <p>{comment.comment}</p>
+                            <p>--{comment.author},
+                            {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                        </div>
+                    </li>
+
+                )
+            })
+
+            return(
+                    <div className="col-12 col-md-5 m-1">
+                        <h4>Comments</h4>
+                        <ul className="list-unstyled">
+                            {list}
+                        </ul>
+                    </div>
+            )
+        }
+        else{
+            return(
+                <div></div>
+            )
+        }
+    }
+
+    render(){
+
+        // console.log(this.props.dishSelect)
+        const {dish} = this.props;
+        console.log(this.props);
+
+        return dish?(
+            <div className="container">
+                <div className="row">
+                        {this.renderDish(dish)}
+                        {this.renderComments(dish.comments)}
+                </div>
+            </div>
+        ):(
+            <div></div>
         )
-    })
-
-    return(
-            <div className="col-12 col-md-5 m-1">
-                <h4>Comments</h4>
-                <ul className="list-unstyled">
-                    {list}
-                </ul>
-                <CommentForm dishId={dishId} addComment={addComment}>
-
-                </CommentForm>
-            </div>
-    )
-}
-else{
-    return(
-        <div></div>
-    )
-}
-}
-
-const DishDetail = (props) => {
-if (props.isLoading) {
-    return(
-        <div className="container">
-            <div className="row">            
-                <Loading />
-            </div>
-        </div>
-    );
-}
-else if (props.errMess) {
-    return(
-        <div className="container">
-            <div className="row">            
-                <h4>{props.errMess}</h4>
-            </div>
-        </div>
-    );
-}
-else if (props.dish != null) {
-    return(
-        <div className="container">
-            <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/menu">Menu</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>{props.dish.name}</h3>
-                    <hr />
-                </div>
-            </div>
-            <div className="row">
-                    <RenderDish dish={props.dish} />
-                    <RenderComments 
-                        comments={props.comments}
-                        addComment={props.addComment}
-                        dishId={props.dish.id}
-                    />
-            </div>
-        </div>
-    )
-}else{
-    return(
-        <div></div>
-    )
-}
+    }
 
 }
 
-export default DishDetail;
+export default DishDetail
