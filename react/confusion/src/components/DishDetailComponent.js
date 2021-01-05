@@ -55,7 +55,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
     const DishDetail = (props) =>{
 
         // console.log(this.props.dishSelect)
-        if(this.props.dish != null){
+        if(props.dish != null){
             return (
                 <div className="container">
                     <div className="row">
