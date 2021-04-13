@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const authenticate = require('../authenticate');
 
 const Dishes = require('../models/dishes');
 
@@ -18,7 +19,7 @@ dishRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));   
 })
-.post((req, res, next) => {
+.post(authenticate.verifyUser, (req, res, next) => {
     Dishes.create(req.body)
     .then((dish) => {
         console.log('Dish Created ', dish);
@@ -94,7 +95,7 @@ dishRouter.route('/:dishId/comments')
     }, (err) => next(err))
     .catch((err) = next(err));
 })
-.post((req, res, next) => {
+.post(authenticate.verifyUser, (req, res, next) => {
     Dishes.findById(req.params.dishId)
     .then((dish) => {
         if (dish != null) {
